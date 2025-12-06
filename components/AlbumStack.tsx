@@ -17,18 +17,42 @@ export const AlbumStack: React.FC<AlbumStackProps> = ({
   onSelect,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollMomentumRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+  const activeIndexRef = useRef(activeIndex);
+  const scrollThreshold = 80;
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
   
   // Handle Wheel scroll for the stack
   useEffect(() => {
+    const animateScroll = () => {
+      if (scrollMomentumRef.current > scrollThreshold && activeIndexRef.current < albums.length - 1) {
+        onIndexChange(activeIndexRef.current + 1);
+        scrollMomentumRef.current = 0;
+      } else if (scrollMomentumRef.current < -scrollThreshold && activeIndexRef.current > 0) {
+        onIndexChange(activeIndexRef.current - 1);
+        scrollMomentumRef.current = 0;
+      }
+
+      scrollMomentumRef.current *= 0.6;
+
+      if (Math.abs(scrollMomentumRef.current) > 1) {
+        rafRef.current = requestAnimationFrame(animateScroll);
+      } else {
+        scrollMomentumRef.current = 0;
+        rafRef.current = null;
+      }
+    };
+
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      // Debounce logic could be added here, but simple direction check works for vibe
-      if (Math.abs(e.deltaY) > 20) {
-        if (e.deltaY > 0) {
-           onIndexChange(Math.min(albums.length - 1, activeIndex + 1));
-        } else {
-           onIndexChange(Math.max(0, activeIndex - 1));
-        }
+      scrollMomentumRef.current += e.deltaY;
+
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(animateScroll);
       }
     };
 
@@ -40,8 +64,12 @@ export const AlbumStack: React.FC<AlbumStackProps> = ({
       if (container) {
         container.removeEventListener('wheel', handleWheel);
       }
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+      scrollMomentumRef.current = 0;
     };
-  }, [activeIndex, albums.length, onIndexChange]);
+  }, [albums.length, onIndexChange, scrollThreshold]);
 
   return (
     <div 
@@ -63,6 +91,7 @@ export const AlbumStack: React.FC<AlbumStackProps> = ({
         {albums.map((album, index) => {
           const distance = index - activeIndex;
           const isActive = index === activeIndex;
+          const featuredTrack = album.tracks[0];
 
           // Only render albums within a certain range to save resources
           if (Math.abs(distance) > 3) return null;
@@ -132,6 +161,13 @@ export const AlbumStack: React.FC<AlbumStackProps> = ({
                   <p className="text-lg md:text-xl text-white/70 font-light mt-2 tracking-widest uppercase">
                     {album.artist}
                   </p>
+                  {isActive && featuredTrack && (
+                    <div className="mt-4 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-black/60 border border-white/10 backdrop-blur-sm text-white/80 text-sm">
+                      <span className="uppercase tracking-[0.25em] text-[10px] text-white/50">Track</span>
+                      <span className="font-semibold text-white">{featuredTrack.title}</span>
+                      <span className="text-white/50 font-mono text-xs">{featuredTrack.duration}</span>
+                    </div>
+                  )}
               </motion.div>
             </motion.div>
           );

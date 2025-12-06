@@ -4,7 +4,7 @@ import { AlbumStack } from './components/AlbumStack';
 import { AlbumDetail } from './components/AlbumDetail';
 import { ALBUMS } from './constants';
 import { Album, Track } from './types';
-import { Menu, Search } from 'lucide-react';
+import { Menu, Pause, Play, Search } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -49,7 +49,9 @@ const App: React.FC = () => {
       audioContextRef.current = ctx;
       
       const analyser = ctx.createAnalyser();
-      analyser.fftSize = 64; // Small FFT size for bass detection
+      analyser.fftSize = 256; // Higher FFT resolution for tighter beat reads
+      analyser.smoothingTimeConstant = 0.6;
+      analyser.minDecibels = -85;
       analyserRef.current = analyser;
       setAnalyserNode(analyser);
 
@@ -148,6 +150,8 @@ const App: React.FC = () => {
   }, [activeIndex, isDetailOpen]);
 
   const currentAlbum = ALBUMS[activeIndex];
+  const featureTrack = currentAlbum.tracks[0];
+  const isFeaturePlaying = featureTrack && playingTrack?.title === featureTrack.title && isPlaying;
 
   return (
     <div className="relative w-full h-screen bg-black text-white overflow-hidden">
@@ -176,16 +180,31 @@ const App: React.FC = () => {
             </div>
         </header>
 
-        <div className="absolute bottom-12 left-12 hidden md:block">
-             <div className="overflow-hidden">
-                <h3 className="font-display text-sm font-bold tracking-[0.3em] opacity-60 mb-2">
-                    {isPlaying ? 'NOW PLAYING' : 'SELECTED ALBUM'}
-                </h3>
-                <div className="text-2xl font-light">
-                     {currentAlbum.artist} <span className="mx-2 opacity-50">—</span> {currentAlbum.title}
-                </div>
-             </div>
-        </div>
+        {featureTrack && (
+          <div className="absolute bottom-6 left-6 right-6 md:left-12 md:right-auto md:bottom-12 max-w-xl pointer-events-auto">
+               <div className="overflow-hidden">
+                  <h3 className="font-display text-sm font-bold tracking-[0.3em] opacity-60 mb-2">
+                      {isPlaying ? 'NOW PLAYING' : 'SELECTED ALBUM'}
+                  </h3>
+                  <div className="text-2xl font-light">
+                       {currentAlbum.artist} <span className="mx-2 opacity-50">—</span> {currentAlbum.title}
+                  </div>
+               </div>
+               <div className="mt-4 flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 backdrop-blur-sm shadow-lg">
+                  <button 
+                    onClick={() => featureTrack.audioUrl && handlePlayTrack(featureTrack)}
+                    className="p-3 rounded-full bg-white text-black hover:scale-105 transition-transform"
+                    disabled={!featureTrack.audioUrl}
+                  >
+                    {isFeaturePlaying ? <Pause size={18} /> : <Play size={18} />}
+                  </button>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold">{featureTrack.title}</span>
+                    <span className="text-xs text-white/60">Featured track · {featureTrack.duration}</span>
+                  </div>
+               </div>
+          </div>
+        )}
 
         <div className="pointer-events-auto w-full h-full">
             <AlbumStack 

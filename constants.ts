@@ -1,87 +1,83 @@
 import { Album } from './types';
 
-// Using SoundHelix for reliable creative commons audio testing
-// Images are generated via unique seeds to specific themes
+// Albums reference local audio kept in /public/songs; cover images use seeded picsum URLs for consistency.
 
 export const ALBUMS: Album[] = [
   {
-    id: '1',
-    title: 'Neon Horizon',
-    artist: 'Cyber Pulse',
+    id: 'pendulum',
+    title: 'Pendulum of Thoughts',
+    artist: 'Arvin Hakakian',
     year: '2024',
-    // Seed 'neon' ensures a cyberpunk/neon vibe
-    coverUrl: 'https://picsum.photos/seed/neon-horizon-v2/800/800', 
-    description: 'A pulsating journey through the digital ether. Deep saw waves and retro-futuristic arpeggios define this synthwave masterpiece.',
-    primaryColor: '#d946ef', // Fuchsia
-    secondaryColor: '#4f46e5', // Indigo
+    // Seeded cover keeps things consistent across refreshes
+    coverUrl: 'https://picsum.photos/seed/pendulum-of-thoughts/800/800', 
+    description: 'An introspective electronic piece that balances delicate melodies with a pulsing low end.',
+    primaryColor: '#38bdf8', // Sky
+    secondaryColor: '#0ea5e9', // Cyan
     tracks: [
       { 
-        title: 'Cyber Chase (Preview)', 
-        duration: '0:30',
-        audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' 
+        title: 'Pendulum of Thoughts', 
+        duration: '2:40',
+        audioUrl: '/songs/pendulum-of-thoughts.mp3' 
       },
-      { title: 'Digital Rain', duration: '4:12' },
-      { title: 'Mainframe Access', duration: '3:30' },
+      { title: 'Threaded Logic', duration: '3:05' },
+      { title: 'Late Night Draft', duration: '2:12' },
     ],
   },
   {
-    id: '2',
-    title: 'Organic Drift',
-    artist: 'Terra Nova',
+    id: 'project108',
+    title: 'Project 108',
+    artist: 'Arvin Hakakian',
     year: '2023',
-    // Seed 'nature' or 'earth' for organic textures
-    coverUrl: 'https://picsum.photos/seed/organic-drift-v2/800/800',
-    description: 'Lo-fi beats meets field recordings. A textural experience designed for deep focus and relaxation.',
-    primaryColor: '#10b981', // Emerald
-    secondaryColor: '#fcd34d', // Amber
-    tracks: [
-      { 
-        title: 'Forest Floor (Preview)', 
-        duration: '0:30', 
-        audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
-      },
-      { title: 'Canopy Light', duration: '2:58' },
-      { title: 'River Stone', duration: '4:15' },
-    ],
-  },
-  {
-    id: '3',
-    title: 'Abyssal Echoes',
-    artist: 'Deep State',
-    year: '2022',
-    // Seed 'water' or 'abstract'
-    coverUrl: 'https://picsum.photos/seed/abyssal-echoes-v3/800/800',
-    description: 'Dark ambient soundscapes from the bottom of the ocean. Heavy reverb, slow attacks, and crushing sub-bass.',
-    primaryColor: '#3b82f6', // Blue
-    secondaryColor: '#1e3a8a', // Dark Blue
-    tracks: [
-      { 
-        title: 'Submarine (Preview)', 
-        duration: '0:30',
-        audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
-      },
-      { title: 'Pressure', duration: '5:45' },
-      { title: 'Bioluminescence', duration: '4:30' },
-    ],
-  },
-  {
-    id: '4',
-    title: 'Solar Flare',
-    artist: 'Helios',
-    year: '2021',
-    // Seed 'fire' or 'red'
-    coverUrl: 'https://picsum.photos/seed/solar-flare-v1/800/800',
-    description: 'High energy experimental electronic. Glitchy percussion, distorted leads, and chaotic rhythms.',
+    coverUrl: 'https://picsum.photos/seed/project-108/800/800',
+    description: 'A driving, rhythmic exploration that layers synth plucks over a steady groove.',
     primaryColor: '#f97316', // Orange
-    secondaryColor: '#991b1b', // Red
+    secondaryColor: '#fb923c', // Light Orange
     tracks: [
       { 
-        title: 'Ignition (Preview)', 
-        duration: '0:30',
-        audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'
+        title: 'Project 108 (v3)', 
+        duration: '4:17', 
+        audioUrl: '/songs/project-108-v3.mp3'
       },
-      { title: 'Corona', duration: '3:10' },
-      { title: 'Magnetic Storm', duration: '4:00' },
+      { title: 'Harmonic Steps', duration: '3:42' },
+      { title: 'Sunset Loop', duration: '2:54' },
+    ],
+  },
+  {
+    id: 'project119',
+    title: 'Project 119',
+    artist: 'Arvin Hakakian',
+    year: '2023',
+    coverUrl: 'https://picsum.photos/seed/project-119/800/800',
+    description: 'Glassy keys and emotive pads float above a patient, evolving rhythm.',
+    primaryColor: '#22d3ee', // Cyan
+    secondaryColor: '#0ea5e9', // Sky
+    tracks: [
+      { 
+        title: 'Project 119', 
+        duration: '2:54',
+        audioUrl: '/songs/project-119.m4a'
+      },
+      { title: 'Sway Lines', duration: '3:11' },
+      { title: 'Quiet Flash', duration: '2:22' },
+    ],
+  },
+  {
+    id: 'projectRoot',
+    title: 'Project Root',
+    artist: 'Arvin Hakakian',
+    year: '2022',
+    coverUrl: 'https://picsum.photos/seed/project-root/800/800',
+    description: 'Cinematic pulses and swelling synth brass that build toward a widescreen payoff.',
+    primaryColor: '#a855f7', // Violet
+    secondaryColor: '#6366f1', // Indigo
+    tracks: [
+      { 
+        title: 'Project Root v2', 
+        duration: '4:36',
+        audioUrl: '/songs/project-root-v2.mp3'
+      },
+      { title: 'Wide Awake', duration: '3:58' },
+      { title: 'Overland', duration: '3:26' },
     ],
   },
 ];

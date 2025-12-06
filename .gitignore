@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Music files - too large for git
+public/songs/
+dist/songs/
